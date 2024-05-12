@@ -9,3 +9,5 @@ mongoose
   })
   .then(() => console.log("Connection succesfully..."))
   .catch((error) => console.log("Connection Error==>", error.message));
+
+mongoose.set("strictQuery", true);
