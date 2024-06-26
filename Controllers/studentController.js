@@ -96,13 +96,13 @@ const signin = async (request, response) => {
 
 const signup = async (request, response) => {
   try {
-    // const newStudent = new StudentScheema({
-    //   name: request.body.name,
-    //   email: request.body.email,
-    //   phone: request.body.phone,
-    //   password: request.body.password,
-    //   age: request.body.age,
-    // });
+    const newStudent = new StudentScheema({
+      name: request.body.name,
+      email: request.body.email,
+      phone: request.body.phone,
+      password: request.body.password,
+      age: request.body.age,
+    });
     console.log("newStudent---------", newStudent);
 
     if (!request.body.password) {
