@@ -1,13 +1,20 @@
 const mongoose = require("mongoose");
-mongoose
-  .connect("mongodb://localhost:27017/studentsApiByPankaj", {
-    // useCreateIndex:true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
 
-    // findAndUpdate:false,
-  })
+const userName = "pankajhasmukh2014";
+const password = "7G8qHpCav0W9Q2nB";
+
+mongoose
+  .connect(
+    `mongodb+srv://${userName}:${password}@cluster0.dwxs9gt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+    {
+      // useCreateIndex:true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000, // Adjust as necessary
+
+      // findAndUpdate:false,
+    }
+  )
   .then(() => console.log("Connection succesfully..."))
   .catch((error) => console.log("Connection Error==>", error.message));
-
-mongoose.set("strictQuery", true);
