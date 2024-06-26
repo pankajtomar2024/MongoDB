@@ -1,4 +1,5 @@
 const authToken = require("../middleware/getAuthToken");
+const modalStudent = require("../modals/StudentScheema");
 const StudentScheema = require("../modals/StudentScheema");
 
 const searchStudentByName = async (request, response) => {
@@ -95,13 +96,13 @@ const signin = async (request, response) => {
 
 const signup = async (request, response) => {
   try {
-    const newStudent = new StudentScheema({
-      name: request.body.name,
-      email: request.body.email,
-      phone: request.body.phone,
-      password: request.body.password,
-      age: request.body.age,
-    });
+    // const newStudent = new StudentScheema({
+    //   name: request.body.name,
+    //   email: request.body.email,
+    //   phone: request.body.phone,
+    //   password: request.body.password,
+    //   age: request.body.age,
+    // });
     console.log("newStudent---------", newStudent);
 
     if (!request.body.password) {
@@ -117,7 +118,7 @@ const signup = async (request, response) => {
         status: false,
       });
     } else {
-      var createdStudent = await newStudent.save();
+      var createdStudent = await modalStudent.create(request.body);
       var token = "";
       var data = {
         email: createdStudent.email,
