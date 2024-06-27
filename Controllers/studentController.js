@@ -285,26 +285,49 @@ const updateStudent = async (request, response) => {
 };
 const changePassword = async (request, response) => {
   try {
-    // const id = request.params.id;
-    console.log("changePassword Data==>", request, response);
+    console.log("Postman Data==>", request.body);
 
-    // if (!id || updateStudent === null) {
-    //   const updateFailed = {
-    //     message: "Student not exit.",
-    //     data: null,
-    //     status: false,
-    //   };
+    const userId = request.body._id;
+    const oldPassword = request.body.oldPassword;
+    const newPassword = request.body.newPassword;
 
-    //   return response.status(404).send(updateFailed);
-    // } else {
-    //   const updateSuccess = {
-    //     message: "Student updated successfully.",
-    //     data: updateStudent,
-    //     status: true,
-    //   };
+    if (!userId || !oldPassword || !newPassword) {
+      return response.status(400).send({
+        message: "User ID, old password, and new password are required.",
+        data: null,
+        status: false,
+      });
+    }
 
-    //   response.send(updateSuccess);
-    // }
+    const user = await StudentScheema.findById(userId);
+    console.log("user==>", user);
+
+    if (!user) {
+      return response.status(404).send({
+        message: "Student not found.",
+        data: null,
+        status: false,
+      });
+    } else if (user.password != oldPassword) {
+      const updateFailed = {
+        message: "Old password not matched.",
+        data: null,
+        status: false,
+      };
+
+      return response.status(404).send(updateFailed);
+    } else {
+      user.password = newPassword;
+      await user.save();
+
+      const updatedPassword = {
+        message: "Password updated successfully.",
+        data: user,
+        status: true,
+      };
+
+      response.status(200).send(updatedPassword);
+    }
   } catch (error) {
     const updateFailed = {
       message: error.message,
