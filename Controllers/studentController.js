@@ -283,6 +283,37 @@ const updateStudent = async (request, response) => {
     response.status(500).send(updateFailed);
   }
 };
+const changePassword = async (request, response) => {
+  try {
+    // const id = request.params.id;
+    console.log("changePassword Data==>", request, response);
+
+    // if (!id || updateStudent === null) {
+    //   const updateFailed = {
+    //     message: "Student not exit.",
+    //     data: null,
+    //     status: false,
+    //   };
+
+    //   return response.status(404).send(updateFailed);
+    // } else {
+    //   const updateSuccess = {
+    //     message: "Student updated successfully.",
+    //     data: updateStudent,
+    //     status: true,
+    //   };
+
+    //   response.send(updateSuccess);
+    // }
+  } catch (error) {
+    const updateFailed = {
+      message: error.message,
+      data: null,
+      status: false,
+    };
+    response.status(500).send(updateFailed);
+  }
+};
 
 module.exports = {
   searchStudentByName,
@@ -292,4 +323,5 @@ module.exports = {
   getStudentById,
   deleteStudent,
   updateStudent,
+  changePassword,
 };
