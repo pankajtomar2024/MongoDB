@@ -1,6 +1,8 @@
 const authToken = require("../middleware/getAuthToken");
 const modalStudent = require("../modals/StudentScheema");
 const StudentScheema = require("../modals/StudentScheema");
+const nodemailer = require("nodemailer");
+const path = require("path");
 
 const searchStudentByName = async (request, response) => {
   try {
@@ -338,6 +340,76 @@ const changePassword = async (request, response) => {
   }
 };
 
+const sendEmail = async (request, response) => {
+  try {
+    const body = request.body;
+    console.log("Postman Data==>", body);
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      service: "gmail",
+
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "pankajhasmukh2014@gmail.com",
+        pass: "yaev vmfm monh tzan",
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+      connectionTimeout: 10000,
+    });
+
+    console.log("__dirname------", __dirname); // /Users/empronics_mac/Desktop/Project/MongoDB/
+    const mailOptions = {
+      from: {
+        name: body.subject,
+        address: "pankajhasmukh2014@gmail.com",
+      },
+      to: [body.email], // list of receivers
+      subject: body.subject, // Subject line
+      text: body.subject, // plain text body
+      html: `<p>${body.html_body}</p>`, // html body
+      attachments: [
+        {
+          filename: "Deployment_Costing.pdf",
+          path: path.join(
+            "/Users/empronics_mac/Desktop/Project/MongoDB/Assets/Deployment_Costing.pdf"
+          ),
+          contentType: "application/pdf", // optional
+        },
+        // {
+        //   filename: "splashscreen.png",
+        //   path: path.join(
+        //     "/Users/empronics_mac/Desktop/Project/MongoDB/Assets/splashscreen.png"
+        //   ),
+        //   contentType: "image/png", // optional
+        // },
+      ],
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+
+    // console.log("Message sent: ", info);
+
+    const emailSentSuccess = {
+      message: "Email sent successfully",
+      data: info,
+      status: true,
+    };
+
+    response.status(200).send(emailSentSuccess);
+  } catch (error) {
+    const updateFailed = {
+      message: error.message,
+      data: null,
+      status: false,
+    };
+    response.status(500).send(updateFailed);
+  }
+};
+
 module.exports = {
   searchStudentByName,
   signin,
@@ -347,4 +419,5 @@ module.exports = {
   deleteStudent,
   updateStudent,
   changePassword,
+  sendEmail,
 };

@@ -8,6 +8,7 @@ const {
   deleteStudent,
   updateStudent,
   changePassword,
+  sendEmail,
 } = require("../Controllers/studentController");
 
 const StudentRouter = express.Router();
@@ -20,5 +21,6 @@ StudentRouter.post("/getStudentById", getStudentById);
 StudentRouter.delete("/deleteStudent/:id", deleteStudent);
 StudentRouter.put("/updateStudent/:id", updateStudent);
 StudentRouter.post("/changePassword", changePassword);
+StudentRouter.post("/sendEmail", sendEmail);
 
 module.exports = StudentRouter;
