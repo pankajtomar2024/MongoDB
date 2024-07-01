@@ -2,6 +2,10 @@
 
 SERVER :- localhost:8000/getAllStudents or http://localhost:8000/getAllStudents
 
+const API_URL = IS_ANDROID
+? 'http://10.0.2.2:3000/client_token'
+: 'http://localhost:3000/client_token';
+
 # What keyword means
 
 socket means particular user

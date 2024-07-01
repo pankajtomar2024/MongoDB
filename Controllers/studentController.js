@@ -3,6 +3,7 @@ const modalStudent = require("../modals/StudentScheema");
 const StudentScheema = require("../modals/StudentScheema");
 const nodemailer = require("nodemailer");
 const path = require("path");
+const ejs = require("ejs");
 
 const searchStudentByName = async (request, response) => {
   try {
@@ -361,7 +362,16 @@ const sendEmail = async (request, response) => {
       connectionTimeout: 10000,
     });
 
-    console.log("__dirname------", __dirname); // /Users/empronics_mac/Desktop/Project/MongoDB/
+    const templatePath = path.join(
+      "/Users/empronics_mac/Desktop/Project/MongoDB/EmailTemplate/forgetPassword.ejs"
+    );
+
+    console.log("templatePath-------", templatePath);
+
+    // const htmlData = await ejs.renderFile(templatePath, data);
+
+    // const template = ejs.compile(htmlData, options);
+
     const mailOptions = {
       from: {
         name: body.subject,
@@ -391,8 +401,6 @@ const sendEmail = async (request, response) => {
 
     const info = await transporter.sendMail(mailOptions);
 
-    // console.log("Message sent: ", info);
-
     const emailSentSuccess = {
       message: "Email sent successfully",
       data: info,
@@ -409,6 +417,37 @@ const sendEmail = async (request, response) => {
     response.status(500).send(updateFailed);
   }
 };
+const updateProfilePicture = async (request, response) => {
+  try {
+    const { _id, profileImage } = request.body;
+    console.log("Postman updateProfilePicture==>", _id);
+
+    const user = await StudentScheema.findById(_id);
+
+    if (!profileImage || !_id) {
+      response.status(500).send({
+        message: "Image is mandotry & user Id",
+        status: false,
+        data: null,
+      });
+    }
+
+    const success = {
+      message: "Uploaded successfully",
+      status: true,
+      data: { profileImage: user.profileImage },
+    };
+
+    response.status(200).send(success);
+  } catch (error) {
+    const updateFailed = {
+      message: error.message,
+      status: false,
+      data: null,
+    };
+    response.status(500).send(updateFailed);
+  }
+};
 
 module.exports = {
   searchStudentByName,
@@ -420,4 +459,5 @@ module.exports = {
   updateStudent,
   changePassword,
   sendEmail,
+  updateProfilePicture,
 };

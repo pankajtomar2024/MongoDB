@@ -9,6 +9,7 @@ const {
   updateStudent,
   changePassword,
   sendEmail,
+  updateProfilePicture,
 } = require("../Controllers/studentController");
 
 const StudentRouter = express.Router();
@@ -22,5 +23,6 @@ StudentRouter.delete("/deleteStudent/:id", deleteStudent);
 StudentRouter.put("/updateStudent/:id", updateStudent);
 StudentRouter.post("/changePassword", changePassword);
 StudentRouter.post("/sendEmail", sendEmail);
+StudentRouter.post("/updateProfilePicture", updateProfilePicture);
 
 module.exports = StudentRouter;
